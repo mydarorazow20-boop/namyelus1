@@ -108,9 +108,7 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
   var lock = document.getElementById('lock'), sur = document.getElementById('surprise');
   var started = false, tick;
 
-  var TEST_MODE = true;   // TEMPORARY: true = skip the date check. Set to false before the real launch.
   function unlocked(){
-    if (TEST_MODE) return true;
     if (/[?&]lock\b/.test(q)) return false;
     if (/[?&]open\b/.test(q)) return true;
     return Date.now() >= TARGET;
@@ -194,5 +192,4 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
 })();
 </script>
 </body>
-  </html>
-  
+</html>
