@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doglan güniň gutly bolsun, Beğenç! 🎂</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ff7589;--bg2:#ff5f7a;--cream:#fff3e0;--choc:#8a5a4a;--choc2:#b58878;--ink:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(circle at 50% 30%,var(--bg),var(--bg2));color:var(--ink);font-family:'Courier Prime',ui-monospace,monospace;overflow:hidden;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);-webkit-tap-highlight-color:transparent;user-select:none}
+.hidden{display:none!important}
+canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:5}
+
+/* ---------- Lock screen ---------- */
+#lock{height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{width:min(92vw,440px);text-align:center;padding:34px 22px;border-radius:28px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 20px 50px rgba(120,20,50,.25)}
+.gift{font-size:60px;display:inline-block;animation:bob 2.4s ease-in-out infinite}
+.card h1{font-family:'Dancing Script',cursive;font-size:clamp(28px,8vw,38px);margin:10px 0 8px}
+.card p{font-size:clamp(14px,4vw,17px);line-height:1.5;opacity:.95}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:22px 0 6px}
+.count div{background:rgba(255,255,255,.25);border-radius:16px;padding:12px 2px}
+.count b{display:block;font-size:clamp(22px,7vw,30px)}
+.count span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+@keyframes bob{50%{transform:translateY(-8px) rotate(4deg)}}
+
+/* ---------- Surprise ---------- */
+#surprise{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4vh;padding:16px;cursor:pointer}
+#hint{font-size:clamp(16px,4.5vw,22px);letter-spacing:.04em;opacity:0;transition:opacity .6s;min-height:1.4em}
+#hint.show{opacity:1;animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{50%{opacity:.45}}
+.stage{--w:min(78vw,300px);width:var(--w);height:calc(var(--w)*.72);position:relative;margin-top:2vh}
+.stage>*{position:absolute;left:50%;transform:translateX(-50%)}
+.plate{bottom:0;width:122%;height:6px;background:#fff;border-radius:6px;box-shadow:0 6px 12px rgba(120,20,50,.25)}
+.layer{width:100%;height:27%;border-radius:5px;opacity:0;
+  background:repeating-linear-gradient(0deg,var(--choc) 0 70%,var(--choc2) 70% 82%,var(--choc) 82% 100%);animation:drop .7s cubic-bezier(.3,1.4,.5,1) forwards}
+.l1{bottom:2%;animation-delay:.3s}.l2{bottom:29%;animation-delay:1s}
+@keyframes drop{from{opacity:0;transform:translate(-50%,-60px)}to{opacity:1;transform:translate(-50%,0)}}
+.icing{bottom:56%;width:104%;height:9%;background:var(--cream);border-radius:12px 12px 4px 4px;opacity:0;animation:drop .7s ease-out 1.7s forwards}
+.drip{bottom:calc(56% - var(--h));width:7%;height:var(--h);background:var(--cream);border-radius:0 0 99px 99px;opacity:0;animation:fade .5s ease-out 2.3s forwards}
+@keyframes fade{to{opacity:1}}
+.candle{bottom:65%;width:2.6%;height:20%;border-radius:3px;opacity:0;
+  background:repeating-linear-gradient(135deg,#fff 0 4px,#ffb3c1 4px 8px);animation:cdrop .5s ease-out forwards}
+@keyframes cdrop{from{opacity:0;transform:translate(-50%,-50px)}to{opacity:1;transform:translate(-50%,0)}}
+.flame{position:absolute;left:50%;bottom:100%;width:210%;height:62%;margin-left:-105%;margin-bottom:3px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(ellipse at 50% 75%,#fff7b0 0,#ffd23f 45%,#ff9a1f 100%);box-shadow:0 0 12px 4px rgba(255,210,80,.8),0 0 28px 10px rgba(255,170,60,.45);
+  transform-origin:50% 100%;animation:flick .35s ease-in-out infinite alternate;transition:opacity .5s,transform .5s}
+@keyframes flick{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.88,1.1) rotate(3deg)}}
+.out .flame{opacity:0;transform:scale(0);animation:none}
+.smoke{position:absolute;left:50%;bottom:100%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:rgba(255,255,255,.7);opacity:0}
+.out .smoke{animation:smoke 1.6s ease-out forwards}
+@keyframes smoke{0%{opacity:.8;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--dx,6px),-70px) scale(5)}}
+#msg{text-align:center;min-height:110px}
+#msg .t{font-style:italic;font-size:clamp(15px,4.2vw,19px);opacity:.95}
+#msg h1{font-family:'Dancing Script',cursive;font-size:clamp(34px,10vw,60px);line-height:1.1;text-shadow:0 3px 14px rgba(120,20,50,.3)}
+#msg p{margin-top:8px;font-size:clamp(14px,4vw,18px);line-height:1.5;max-width:30ch;margin-inline:auto}
+#msg.pop h1,#msg.pop p{animation:pop .8s cubic-bezier(.3,1.5,.5,1) both}
+#msg.pop p{animation-delay:.4s}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(20px)}to{opacity:1;transform:none}}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:4}
+.hearts i{position:absolute;bottom:-30px;font-style:normal;animation:float linear forwards}
+@keyframes float{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+@media (max-height:620px){.stage{--w:min(55vw,240px)}#msg{min-height:90px}}
+</style>
+</head>
+<body>
+
+<!-- Waiting / lock screen -->
+<section id="lock" class="hidden">
+  <div class="card">
+    <div class="gift">🎁</div>
+    <h1>Beğenç, biraz garaş!</h1>
+    <p>Beğenç, doglan güni üçin biraz garaşmaly!<br>Sene <b>28.02.2026</b> bolýança garaş...</p>
+    <div class="count">
+      <div><b id="d">0</b><span>gün</span></div>
+      <div><b id="h">0</b><span>sagat</span></div>
+      <div><b id="m">0</b><span>minut</span></div>
+      <div><b id="s">0</b><span>sekunt</span></div>
+    </div>
+    <p style="font-size:13px;opacity:.85;margin-top:14px">Sürpriz wagty gelende özi açylar ✨</p>
+  </div>
+</section>
+
+<!-- Birthday surprise -->
+<section id="surprise" class="hidden">
+  <div id="hint">&nbsp;</div>
+  <div class="stage" id="stage">
+    <div class="plate"></div>
+    <div class="layer l1"></div>
+    <div class="layer l2"></div>
+    <div class="icing"></div>
+  </div>
+  <div id="msg"><div class="t">Happy Birthday,<br>Beğenç</div></div>
+</section>
+
+<div class="hearts" id="hearts"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+(function(){
+  // 28.02.2026, 00:00 in the device's local time (month index 1 = February)
+  var TARGET = new Date(2026, 1, 28, 0, 0, 0).getTime();
+  var q = location.search;                       // ?lock = preview waiting screen, ?open = preview surprise
+  var lock = document.getElementById('lock'), sur = document.getElementById('surprise');
+  var started = false, tick;
+
+  var TEST_MODE = true;   // TEMPORARY: true = skip the date check. Set to false before the real launch.
+  function unlocked(){
+    if (TEST_MODE) return true;
+    if (/[?&]lock\b/.test(q)) return false;
+    if (/[?&]open\b/.test(q)) return true;
+    return Date.now() >= TARGET;
+  }
+  function pad(n){return String(n).padStart(2,'0')}
+  function update(){
+    if (unlocked()){ clearInterval(tick); lock.classList.add('hidden'); sur.classList.remove('hidden'); start(); return; }
+    var left = Math.max(0, TARGET - Date.now()), s = Math.floor(left/1000);
+    lock.classList.remove('hidden');
+    d.textContent = Math.floor(s/86400); h.textContent = pad(Math.floor(s%86400/3600));
+    m.textContent = pad(Math.floor(s%3600/60)); document.getElementById('s').textContent = pad(s%60);
+  }
+  var d=document.getElementById('d'),h=document.getElementById('h'),m=document.getElementById('m');
+  update(); if(!started) tick = setInterval(update, 1000);
+
+  /* ---------- Cake ---------- */
+  var stage = document.getElementById('stage'), hint = document.getElementById('hint'), msg = document.getElementById('msg');
+  var blown = false;
+  function start(){
+    if (started) return; started = true;
+    [8,13,6,15,9,12,7,14,10].forEach(function(hh,i){           // cream drips
+      var x = document.createElement('div'); x.className='drip';
+      x.style.setProperty('--h', hh+'%'); x.style.left = (8+i*10.5)+'%'; stage.appendChild(x);
+    });
+    var n = 9;
+    for (var i=0;i<n;i++){                                     // candles
+      var c = document.createElement('div'); c.className='candle';
+      c.style.left = (14 + i*9.5)+'%'; c.style.animationDelay = (2.6+i*.15)+'s';
+      c.innerHTML = '<div class="flame"></div><div class="smoke" style="--dx:'+((i%2?1:-1)*(4+i))+'px"></div>';
+      stage.appendChild(c);
+    }
+    setTimeout(function(){ hint.textContent='Touch to blow'; hint.classList.add('show'); }, 4300);
+    document.getElementById('surprise').addEventListener('click', blow);
+    window.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter') blow(); });
+  }
+  function blow(){
+    if (blown || !hint.classList.contains('show')) return; blown = true;
+    stage.classList.add('out'); hint.classList.remove('show'); hint.style.opacity = 0;
+    setTimeout(function(){
+      msg.innerHTML = '<h1>Happy Birthday,<br>Beğenç! 🎉</h1><p>Doglan günüň gutly bolsun! Ömrüň şatlyk, bagt we söýgi bilen dolsun 💖</p>';
+      msg.classList.add('pop'); burst(); hearts();
+    }, 700);
+  }
+
+  /* ---------- Confetti ---------- */
+  var cv = document.getElementById('confetti'), ctx = cv.getContext('2d'), P = [], W, H, running = false, until = 0;
+  function size(){ var r = window.devicePixelRatio||1; W = innerWidth; H = innerHeight; cv.width = W*r; cv.height = H*r; ctx.setTransform(r,0,0,r,0,0); }
+  size(); addEventListener('resize', size);
+  var COLORS = ['#fff','#ffe066','#6ee7b7','#7dd3fc','#c4b5fd','#fda4af','#fbbf24'];
+  function mk(top){
+    return {x:Math.random()*W, y: top ? -20 : Math.random()*-H*.6, w:6+Math.random()*7, h:9+Math.random()*9,
+      vy:2+Math.random()*3.5, vx:(Math.random()-.5)*2, r:Math.random()*6, vr:(Math.random()-.5)*.3,
+      c:COLORS[Math.random()*COLORS.length|0], t:Math.random()*6};
+  }
+  function burst(){
+    for (var i=0;i<170;i++) P.push(mk(false));
+    until = Date.now() + 9000;
+    if (!running){ running = true; requestAnimationFrame(loop); }
+  }
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    if (Date.now() < until && P.length < 220 && Math.random() < .6) P.push(mk(true));
+    for (var i=P.length-1;i>=0;i--){
+      var p = P[i]; p.t += .05; p.x += p.vx + Math.sin(p.t)*.8; p.y += p.vy; p.r += p.vr;
+      if (p.y > H+20){ P.splice(i,1); continue; }
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.scale(1, Math.cos(p.t));
+      ctx.fillStyle = p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    }
+    if (P.length) requestAnimationFrame(loop); else running = false;
+  }
+  function hearts(){
+    var box = document.getElementById('hearts'), E = ['💖','💗','🎈','✨','💕'], k = 0;
+    var iv = setInterval(function(){
+      var e = document.createElement('i'); e.textContent = E[Math.random()*E.length|0];
+      e.style.left = Math.random()*100+'vw'; e.style.fontSize = 18+Math.random()*22+'px';
+      e.style.animationDuration = 5+Math.random()*4+'s'; box.appendChild(e);
+      setTimeout(function(){ e.remove(); }, 9500);
+      if (++k > 30) clearInterval(iv);
+    }, 280);
+  }
+})();
+</script>
+</body>
+</html>
